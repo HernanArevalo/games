@@ -5,55 +5,34 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 const IMAGES = ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg']
-              .flatMap((image) => [image,image])
+              .flatMap((image) => [`a|${image}`,`b|${image}`])
               .sort(()=> Math.random() - 0.5)
 
 export default function MemoTest() {
 
-  const [imgSelected, setImgSelected] = useState([])
-  const [idxSelected, setIdxSelected] = useState([])
+  const [selected, setSelected] = useState([])
   const [guessed, setGuessed] = useState([])
 
-
-  useEffect(() => {
-    
-    //console.log('imgSelected',imgSelected)
-    //console.log('idxSelected',idxSelected)
-
-
-    if(imgSelected.length == 2){
-
-      if(imgSelected[0] == imgSelected[1] && !guessed.includes(idxSelected)){
-        setGuessed((guessed) => guessed.concat(idxSelected))
-
-      }
-
-      setTimeout(() => {
-        setImgSelected([])
-        setIdxSelected([])
-      }, 1000);
-    }
-    //console.log('guessed', guessed)
-
-
-  }, [idxSelected])
-
   useEffect(()=>{
-    if(guessed.length == 16){
-
-    }
-  }, [guessed])
+    console.log(selected)
+  }, [selected])
 
 
-
-  const onHandleClick = (img,idx) => {
-    if ( !guessed.includes(idx) ){
-      setImgSelected((selected) => selected.concat( img ));
-      setIdxSelected((selected) => selected.concat( idx ));
+  const onHandleClick = (img) => {
+    if (selected.length < 2 && !selected.includes(img)){
+      setSelected((selected) => selected.concat(img))
 
     }
   }
-  
+
+  useEffect(()=>{
+    if (selected.length == 2) {
+      
+    }
+
+
+  }, [selected])
+
 
   return (
     <>
@@ -62,21 +41,15 @@ export default function MemoTest() {
       </Head>
 
       <div>
-        <h3>MemoTest</h3>
-
+        <h3>Memotest</h3>
         <ul>
-          {IMAGES.map((img,idx) => (
-            
-            <li key={idx} 
-                onClick={ ()=> { onHandleClick(img,idx) }}
-                disabled = { imgSelected.length > 1 }
+          {/* { IMAGES.map( img => {
+            const [, url] = img.split('|')
+
+
+            return(
+            <li key={url} 
             >
-              {/* { guessed.includes(idx) || idxSelected.includes(idx)
-              ?
-              <Image src={`/memotest/${img}`} alt={'messi image'} width='100' height='100'  draggable="false"/>
-              :
-              <div className='card-hidden'><Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/></div>
-              } */}
 
             <div className='card-container'>
               <div className='card'>
@@ -84,14 +57,46 @@ export default function MemoTest() {
                   <Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/>
                 </div>
                 <div className='back'>
-                  <Image src={`/memotest/${img}`} alt={'messi image'} width='100' height='100'  draggable="false"/>
+
+                  { 
+                    selected.includes(img) ?
+                      <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
+                    :
+                      <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false"/>
+                  }
+
                 </div>
               </div>
             </div>
 
             </li>
 
-          ))}
+          )}) } */}
+
+          { IMAGES.map( img => {
+            const [, url] = img.split('|')
+
+            return(
+              <li key={ img }
+                  onClick={ () => onHandleClick(img) }
+              >
+                <div className='card-container'>
+                <div className='card'>
+                { 
+                  selected.includes(img) ?
+                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
+                  :
+                    <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false"/>
+                }
+
+                </div>
+                </div>
+
+              </li>
+            )
+          })}
+
+
         </ul>
 
       </div>
@@ -129,7 +134,7 @@ export default function MemoTest() {
 
         }
 
-        .card-container:hover > .card {
+        .card-active {
           cursor: pointer;
           transform: rotateY(180deg);
         }
