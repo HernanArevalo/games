@@ -13,9 +13,6 @@ export default function MemoTest() {
   const [selected, setSelected] = useState([])
   const [guessed, setGuessed] = useState([])
 
-  useEffect(()=>{
-    console.log(selected)
-  }, [selected])
 
 
   const onHandleClick = (img) => {
@@ -27,7 +24,19 @@ export default function MemoTest() {
 
   useEffect(()=>{
     if (selected.length == 2) {
-      
+      const [, img1] = selected[0].split('|')
+      const [, img2] = selected[1].split('|')
+
+
+      if (img1 == img2 ) {
+        setGuessed(guessed => guessed.concat(selected))
+        setSelected([])
+      }else{
+        setTimeout(() => {
+          setSelected([])
+        }, 1000);
+      }
+
     }
 
 
@@ -83,7 +92,7 @@ export default function MemoTest() {
                 <div className='card-container'>
                 <div className='card'>
                 { 
-                  selected.includes(img) ?
+                  selected.includes(img) || guessed.includes(img)?
                     <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
                   :
                     <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false"/>
