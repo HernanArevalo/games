@@ -5,8 +5,8 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 const IMAGES = ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg']
-              .flatMap((image) => [`a|${image}`,`b|${image}`])
-              .sort(()=> Math.random() - 0.5)
+               .flatMap((image) => [`a|${image}`,`b|${image}`])
+               .sort(()=> Math.random() - 0.5)
 
 export default function MemoTest() {
 
@@ -16,6 +16,8 @@ export default function MemoTest() {
 
 
   const onHandleClick = (img) => {
+
+
     if (selected.length < 2 && !selected.includes(img)){
       setSelected((selected) => selected.concat(img))
 
@@ -24,21 +26,23 @@ export default function MemoTest() {
 
   useEffect(()=>{
     if (selected.length == 2) {
+
+
       const [, img1] = selected[0].split('|')
       const [, img2] = selected[1].split('|')
 
+      console.log(selected)
 
       if (img1 == img2 ) {
-        setGuessed(guessed => guessed.concat(selected))
+        setGuessed((guessed) => guessed.concat(selected) )
         setSelected([])
       }else{
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
           setSelected([])
-        }, 1000);
+        }, 1500);
       }
 
     }
-
 
   }, [selected])
 
@@ -52,53 +56,32 @@ export default function MemoTest() {
       <div>
         <h3>Memotest</h3>
         <ul>
-          {/* { IMAGES.map( img => {
-            const [, url] = img.split('|')
-
-
-            return(
-            <li key={url} 
-            >
-
-            <div className='card-container'>
-              <div className='card'>
-                <div className='front'>
-                  <Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/>
-                </div>
-                <div className='back'>
-
-                  { 
-                    selected.includes(img) ?
-                      <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
-                    :
-                      <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false"/>
-                  }
-
-                </div>
-              </div>
-            </div>
-
-            </li>
-
-          )}) } */}
 
           { IMAGES.map( img => {
             const [, url] = img.split('|')
 
             return(
               <li key={ img }
-                  onClick={ () => onHandleClick(img) }
+                  onClick={ () => selected.length < 2 && setSelected((selected) => selected.concat(img)) }
               >
                 <div className='card-container'>
-                <div className='card'>
-                { 
-                  selected.includes(img) || guessed.includes(img)?
-                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
-                  :
-                    <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false"/>
-                }
+                  <div className={`card ${selected.includes(img) || guessed.includes(img) ? 'card-active' : 'card-inactive'}`}>
 
-                </div>
+                  <div className='front'>
+                    <Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/>
+                  </div>
+                  <div className='back'>
+                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
+                  </div>
+
+                  {/* { 
+                    selected.includes(img) || guessed.includes(img)?
+                      <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false" priority="true"/>
+                    :
+                      <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false" priority="true"/>
+                  } */}
+
+                  </div>
                 </div>
 
               </li>
@@ -143,6 +126,11 @@ export default function MemoTest() {
 
         }
 
+        {/* .card-container:hover > .card {
+          cursor: pointer;
+          transform: rotateY(180deg);
+        } */}
+
         .card-active {
           cursor: pointer;
           transform: rotateY(180deg);
@@ -180,6 +168,15 @@ export default function MemoTest() {
 
         .back {
           transform: rotateY(180deg);
+        }
+
+        @keyframes rotate-card {
+          from{
+            transform: rotateY(0deg);
+          }
+          to {
+            transform: rotateY(180deg);
+          }
         }
 
       `}</style>
