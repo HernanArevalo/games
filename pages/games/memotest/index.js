@@ -4,9 +4,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
+
+
 const IMAGES = ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg']
                .flatMap((image) => [`a|${image}`,`b|${image}`])
                .sort(()=> Math.random() - 0.5)
+
+
 
 export default function MemoTest() {
 
@@ -14,9 +18,9 @@ export default function MemoTest() {
   const [guessed, setGuessed] = useState([])
 
 
-
   const onHandleClick = (img) => {
 
+    console.log(img)
 
     if (selected.length < 2 && !selected.includes(img)){
       setSelected((selected) => selected.concat(img))
@@ -62,16 +66,16 @@ export default function MemoTest() {
 
             return(
               <li key={ img }
-                  onClick={ () => selected.length < 2 && setSelected((selected) => selected.concat(img)) }
+                  onClick={ () => onHandleClick(img) }
               >
                 <div className='card-container'>
                   <div className={`card ${selected.includes(img) || guessed.includes(img) ? 'card-active' : 'card-inactive'}`}>
 
                   <div className='front'>
-                    <Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/>
+                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
                   </div>
                   <div className='back'>
-                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
+                    <Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/>
                   </div>
 
                   {/* { 
