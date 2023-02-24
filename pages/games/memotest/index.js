@@ -5,17 +5,25 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 
-
-const IMAGES = ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg']
-               .flatMap((image) => [`a|${image}`,`b|${image}`])
-               .sort(()=> Math.random() - 0.5)
-
+// const IMAGES = ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg']
+//                .flatMap((image) => [`a|${image}`,`b|${image}`])
+//                .sort(()=> Math.random() - 0.5)
 
 
 export default function MemoTest() {
-
+  
+  const [images, setImages] = useState([])
   const [selected, setSelected] = useState([])
   const [guessed, setGuessed] = useState([])
+
+  useEffect(() => {
+
+    fetch('/api/memotest-api')
+      .then((res) => res.json())
+      .then(({images})=> setImages(images))
+
+  }, [])
+  
 
 
   const onHandleClick = (img) => {
@@ -48,7 +56,7 @@ export default function MemoTest() {
 
     }
 
-  }, [selected])
+  }, [ selected ])
 
 
   return (
@@ -61,7 +69,7 @@ export default function MemoTest() {
         <h3>Memotest</h3>
         <ul>
 
-          { IMAGES.map( img => {
+          { images.map( img => {
             const [, url] = img.split('|')
 
             return(
@@ -72,10 +80,10 @@ export default function MemoTest() {
                   <div className={`card ${selected.includes(img) || guessed.includes(img) ? 'card-active' : 'card-inactive'}`}>
 
                   <div className='front'>
-                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
+                    <Image src={'/memotest/logo.png'} alt={"messi logo"}  width='60' height='60' draggable="false"/>
                   </div>
                   <div className='back'>
-                    <Image alt={"messi logo"}src={'/memotest/logo.png'} width='70' height='70' draggable="false"/>
+                    <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
                   </div>
 
                   {/* { 
