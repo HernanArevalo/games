@@ -112,6 +112,9 @@ export default function MemoTest() {
           cursor: pointer;
 
         }
+        h3{
+          color: ${ colors.grey };
+        }
         .card-hidden{
           background-color: ${colors.grey};
           width: 100%;
@@ -160,7 +163,7 @@ export default function MemoTest() {
         }
 
         .front{
-          background-color: #3a3a3a;
+          background-color: ${colors.grey};
           display: flex;
           flex-direction: column;
           justify-content: center;
