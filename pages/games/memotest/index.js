@@ -5,11 +5,6 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 
-// const IMAGES = ['1.jpg','2.jpg','3.jpg','4.jpg','5.jpg','6.jpg','7.jpg','8.jpg']
-//                .flatMap((image) => [`a|${image}`,`b|${image}`])
-//                .sort(()=> Math.random() - 0.5)
-
-
 export default function MemoTest() {
   
   const [images, setImages] = useState([])
@@ -88,12 +83,6 @@ export default function MemoTest() {
                     <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false"/>
                   </div>
 
-                  {/* { 
-                    selected.includes(img) || guessed.includes(img)?
-                      <Image src={`/memotest/${url}`} alt={'messi image'} width='100' height='100' draggable="false" priority="true"/>
-                    :
-                      <Image src={`/memotest/logo.png`} alt={'messi logo'} width='70' height='70' draggable="false" priority="true"/>
-                  } */}
 
                   </div>
                 </div>
