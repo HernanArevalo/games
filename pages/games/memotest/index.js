@@ -24,11 +24,10 @@ export default function MemoTest() {
 
   }, [])
   
+  var third = false
 
 
   const onHandleClick = (img) => {
-
-    console.log(img)
 
     if (selected.length < 2 && !selected.includes(img)){
       setSelected((selected) => selected.concat(img))
@@ -43,15 +42,18 @@ export default function MemoTest() {
       const [, img1] = selected[0].split('|')
       const [, img2] = selected[1].split('|')
 
-      console.log(selected)
 
       if (img1 == img2 ) {
+
         setGuessed((guessed) => guessed.concat(selected) )
         setSelected([])
+
       }else{
+
         const timeout = setTimeout(() => {
           setSelected([])
         }, 1500);
+
       }
 
     }
@@ -95,7 +97,6 @@ export default function MemoTest() {
 
                   </div>
                 </div>
-
               </li>
             )
           })}
