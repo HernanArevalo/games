@@ -1,15 +1,25 @@
 
-import { colors } from '@/styles/theme'
+import { colors, fonts } from '@/styles/theme'
 import Head from 'next/head'
+import { useState } from 'react'
 
 export default function Tateti() {
 
-    const positions = [ [1,1],[1,2],[1,3],
-                        [2,1],[2,2],[2,3],
-                        [3,1],[3,2],[3,3]
-                      ]
+	const [owners, setOwners] = useState([null, null, null, null, null, null, null, null, null ])
 
-    
+	const [player, setPlayer] = useState(1)
+	const [positions1, setPositions1] = useState([])
+	const [positions2, setPositions2] = useState([])
+
+	const handleClick = (owner,idx) => {
+		if (owner == null) {
+			setOwners((owners)=> { owners[idx] = player })
+
+			console.log(owners)
+			setPlayer(2)
+			
+		}
+	}
 
   return (
     <>
@@ -17,15 +27,18 @@ export default function Tateti() {
         <title>Tateti</title>
       </Head>
 
-      <div>
+      <div className='tateti-container'>
         <h3>Tateti</h3>
-
+        <span>TURNO DEL JUEGADOR {player}</span>
         <ul>
             {
-                positions.map(position => 
-                    <li key={position}>
+                owners.map((owner,idx) =>
+
+                    <li key={idx} onClick={()=> handleClick(owner,idx)}>
                         <div>CARD</div>
-                        <div>{position[0]}</div>
+                        <div>{idx+1}</div>
+												<div>JUGADOR {owner}</div>
+
                     </li>
                     )
             }
@@ -35,9 +48,16 @@ export default function Tateti() {
       </div>
 
       <style jsx>{`
+
         div{
+            font-family: ${ fonts.base };
             color: ${ colors.grey };
             text-align: center;
+        }
+        .tateti-container{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         ul{
             list-style: none;
@@ -49,7 +69,7 @@ export default function Tateti() {
         li{
           overflow: hidden;
           cursor: pointer;
-          border: 2px solid ${ colors.blue };
+          background: ${ colors.grey };
           border-radius: 10px;
           display: flex;
           flex-direction: column;
@@ -57,6 +77,12 @@ export default function Tateti() {
           justify-content: center;
 
         }
+        li > div{
+            color: ${ colors.black };
+            font-weight: 700;
+        }
+
+
       `}</style>
     </>
   )
