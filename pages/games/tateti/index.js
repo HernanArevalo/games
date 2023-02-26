@@ -1,7 +1,7 @@
 
 import { colors, fonts } from '@/styles/theme'
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Tateti() {
 
@@ -13,13 +13,25 @@ export default function Tateti() {
 
 	const handleClick = (owner,idx) => {
 		if (owner == null) {
-			setOwners((owners)=> { owners[idx] = player })
+			setOwners((owners) => {
+				const newOwners = [...owners]
+				newOwners[idx] = player
+				return newOwners
+			} )
 
-			console.log(owners)
-			setPlayer(2)
+			if (player == 1) {
+				setPlayer(2)
+				
+			}else{
+				setPlayer(1)
+				
+			}
 			
 		}
 	}
+
+
+	
 
   return (
     <>
@@ -32,12 +44,12 @@ export default function Tateti() {
         <span>TURNO DEL JUEGADOR {player}</span>
         <ul>
             {
-                owners.map((owner,idx) =>
+                owners?.map((owner,idx) =>
 
-                    <li key={idx} onClick={()=> handleClick(owner,idx)}>
+                    <li key={idx} onClick={()=> handleClick(owner,idx)} className={`player${owner}`}>
                         <div>CARD</div>
-                        <div>{idx+1}</div>
-												<div>JUGADOR {owner}</div>
+                        {/* <div>{idx+1}</div>
+												<div>JUGADOR {owner}</div> */}
 
                     </li>
                     )
@@ -69,14 +81,28 @@ export default function Tateti() {
         li{
           overflow: hidden;
           cursor: pointer;
-          background: ${ colors.grey };
           border-radius: 10px;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
+					border: 2px solid ${ colors.grey };
 
         }
+				.player1{
+          background: ${ colors.grey };
+					border: 2px solid ${ colors.black };
+
+				}
+				.player2{
+          background: ${ colors.black };
+					border: 2px solid ${ colors.white };
+
+				}
+				.player2 > div{
+					color: ${ colors.grey };
+				}
+
         li > div{
             color: ${ colors.black };
             font-weight: 700;
