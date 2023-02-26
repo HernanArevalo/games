@@ -3,15 +3,19 @@ import { colors, fonts } from '@/styles/theme'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 
+const WINNER_COMBINATIONS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+
 export default function Tateti() {
 
-	const [owners, setOwners] = useState([null, null, null, null, null, null, null, null, null ])
+	const [owners, setOwners] = useState([null, null, null, null, null, null, null, null, null ]);
 
-	const [player, setPlayer] = useState(1)
-	const [positions1, setPositions1] = useState([])
-	const [positions2, setPositions2] = useState([])
+
+	const [player, setPlayer] = useState(1);
+	const [positions1, setPositions1] = useState([]);
+	const [positions2, setPositions2] = useState([]);
 
 	const handleClick = (owner,idx) => {
+
 		if (owner == null) {
 			setOwners((owners) => {
 				const newOwners = [...owners]
@@ -20,27 +24,41 @@ export default function Tateti() {
 			} )
 
 			if (player == 1) {
-				setPlayer(2)
-				
+        setPositions1((positions) => positions.concat(idx) )
+        checkWin(positions1)
+        setPlayer(2)
 			}else{
+        setPositions2((positions) => positions.concat(idx) )
+        checkWin(positions2)
 				setPlayer(1)
-				
 			}
 			
 		}
 	}
 
 
-	
+
+  const checkWin = (positions) => {
+    console.log('checkWin called')
+
+    WINNER_COMBINATIONS.forEach(winnerCombination => {
+      if (positions.includes(winnerCombination[0]) && positions.includes(winnerCombination[1]) && positions.includes(winnerCombination[2]) ) {
+        console.log(`GANA JUGADOR ${player}`)
+      }
+    });
+
+  }
+
+
 
   return (
     <>
       <Head>
-        <title>Tateti</title>
+        <title>TicTacToe</title>
       </Head>
 
       <div className='tateti-container'>
-        <h3>Tateti</h3>
+        <h3>TicTacToe</h3>
         <span>TURNO DEL JUEGADOR {player}</span>
         <ul>
             {
@@ -48,8 +66,7 @@ export default function Tateti() {
 
                     <li key={idx} onClick={()=> handleClick(owner,idx)} className={`player${owner}`}>
                         <div>CARD</div>
-                        {/* <div>{idx+1}</div>
-												<div>JUGADOR {owner}</div> */}
+                        <div>{idx}</div>
 
                     </li>
                     )
