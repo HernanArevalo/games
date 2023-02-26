@@ -14,7 +14,7 @@ export default function Tateti() {
 	const [positions1, setPositions1] = useState([]);
 	const [positions2, setPositions2] = useState([]);
   const [gameOver, setGameOver] = useState(false)
-
+  const [winner, setWinner] = useState(null)
 
 	const handleClick = (owner,idx) => {
 
@@ -42,6 +42,7 @@ export default function Tateti() {
     WINNER_COMBINATIONS.forEach(winnerCombination => {
       if (positions.includes(winnerCombination[0]) && positions.includes(winnerCombination[1]) && positions.includes(winnerCombination[2]) ) {
         console.log(`GANA JUGADOR ${pj}`)
+        setWinner(pj)
         setGameOver(true)
       };
     });
@@ -80,8 +81,12 @@ export default function Tateti() {
 
       <div className='tateti-container'>
         <h3>TicTacToe</h3>
-        <span>TURNO DEL JUEGADOR {player}</span>
-        <ul>
+        {
+        !gameOver && <span>TURNO DEL JUEGADOR {player}</span>
+        }
+        {
+        gameOver && <span>GANADOR JUGADOR {winner}</span>
+        }        <ul>
             {
                 owners?.map((owner,idx) =>
 
