@@ -13,10 +13,11 @@ export default function Tateti() {
 	const [player, setPlayer] = useState(1);
 	const [positions1, setPositions1] = useState([]);
 	const [positions2, setPositions2] = useState([]);
+  const [gameOver, setGameOver] = useState(false)
+
 
 	const handleClick = (owner,idx) => {
 
-		if (owner == null) {
 			setOwners((owners) => {
 				const newOwners = [...owners]
 				newOwners[idx] = player
@@ -25,31 +26,51 @@ export default function Tateti() {
 
 			if (player == 1) {
         setPositions1((positions) => positions.concat(idx) )
-        checkWin(positions1)
         setPlayer(2)
 			}else{
         setPositions2((positions) => positions.concat(idx) )
-        checkWin(positions2)
 				setPlayer(1)
 			}
 			
-		}
+		
 	}
 
 
 
-  const checkWin = (positions) => {
-    console.log('checkWin called')
+  const checkWin = (positions, pj) => {
 
     WINNER_COMBINATIONS.forEach(winnerCombination => {
       if (positions.includes(winnerCombination[0]) && positions.includes(winnerCombination[1]) && positions.includes(winnerCombination[2]) ) {
-        console.log(`GANA JUGADOR ${player}`)
-      }
+        console.log(`GANA JUGADOR ${pj}`)
+        setGameOver(true)
+      };
     });
-
   }
 
+  useEffect(() => {
+    if (positions1.length > 2) {
+      checkWin(positions1, 1)
+    }
 
+  }, [ positions1 ])
+  
+  useEffect(() => {
+    if (positions2.length > 2) {
+      checkWin(positions2, 2)
+    }
+
+  }, [ positions2 ])
+
+  // ! GAME OVER
+  useEffect(() => {
+
+    if (!owners.includes(null)) {
+      console.log('GAME OVER')
+    }
+    
+
+  }, [owners])
+  
 
   return (
     <>
@@ -64,7 +85,7 @@ export default function Tateti() {
             {
                 owners?.map((owner,idx) =>
 
-                    <li key={idx} onClick={()=> handleClick(owner,idx)} className={`player${owner}`}>
+                    <li key={idx} onClick={()=> owner == null && handleClick(owner,idx)} className={`player${owner}`}>
                         <div>CARD</div>
                         <div>{idx}</div>
 
