@@ -81,29 +81,32 @@ export default function Tateti() {
 
       <div className='tateti-container'>
         <h3>TicTacToe</h3>
-        {
-        !gameOver && <span>TURNO DEL JUEGADOR {player}</span>
-        }
-        {
-        gameOver && <span>GANADOR JUGADOR {winner}</span>
-        }        <ul>
-            {
-                owners?.map((owner,idx) =>
 
-                    <li key={idx} onClick={()=> owner == null && handleClick(owner,idx)} className={`player${owner}`}>
-                        <div>CARD</div>
-                        <div>{idx}</div>
+        <ul>
+          { owners?.map((owner,idx) =>
 
-                    </li>
-                    )
-            }
+            <li key={idx} onClick={()=> owner == null && handleClick(owner,idx)} className={`player${owner}`}>
+                <div>{owner != null && owner}</div>
 
+            </li>
+          )}
         </ul>
 
+        <div className='results'>
+          {
+          !gameOver && <span>TURNO DEL JUGADOR {player}</span>
+          }
+          {
+          gameOver && <span>GANADOR JUGADOR {winner}</span>
+          }
+        </div>
       </div>
 
       <style jsx>{`
-
+        h3{
+          font-size: 80px;
+          
+        }
         div{
             font-family: ${ fonts.base };
             color: ${ colors.grey };
@@ -112,15 +115,16 @@ export default function Tateti() {
         .tateti-container{
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 60px;
         }
         ul{
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
-            gap: 20px;
-            }
+          justify-content: center;
+          list-style: none;
+          display: grid;
+          grid-template-columns: repeat(3, 100px);
+          grid-template-rows: repeat(3, 100px);
+          gap: 20px;
+        }
         li{
           overflow: hidden;
           cursor: pointer;
@@ -130,6 +134,11 @@ export default function Tateti() {
           align-items: center;
           justify-content: center;
 					border: 2px solid ${ colors.grey };
+          background: ${ colors.black };
+
+        }
+        .playernull > div{
+          color: ${ colors.white };
 
         }
 				.player1{
@@ -138,7 +147,7 @@ export default function Tateti() {
 
 				}
 				.player2{
-          background: ${ colors.black };
+          background: ${ colors.blue };
 					border: 2px solid ${ colors.white };
 
 				}
@@ -149,8 +158,15 @@ export default function Tateti() {
         li > div{
             color: ${ colors.black };
             font-weight: 700;
+            font-size: 40px;
         }
-
+        
+        .results{
+          width: 400px;
+          height: 200px;
+          border: 2px solid ${ colors.blue };
+          border-radius: 30px;
+        }
 
       `}</style>
     </>
